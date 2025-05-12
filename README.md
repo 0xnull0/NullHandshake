@@ -4,6 +4,8 @@
 
 <img src="generated-icon.png" alt="NullHandshake Logo" width="180px">
 
+
+
 ### 🔒 Modern Wireless Network Security Assessment Framework 🔒
 
 [![Python](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
@@ -27,6 +29,7 @@
 <td align="center">🔐 <b>WPA Handshake Capture</b></td>
 </tr>
 </table>
+  <img src="https://github.com/0xnull0/NullHandshake/blob/main/templates/w.avif">
 </div>
 
 ## ✨ Key Features

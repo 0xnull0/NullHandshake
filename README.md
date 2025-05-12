@@ -1,98 +1,151 @@
-# NullHandshake
+<div align="center">
 
-A modular, plugin-driven offensive security framework for wireless network post-exploitation and credential harvesting.
+# ✨ NullHandshake ✨
 
-## Overview
+<img src="generated-icon.png" alt="NullHandshake Logo" width="180px">
 
-NullHandshake is a powerful tool designed for security researchers and penetration testers to assess the security of wireless networks. It provides a unified interface for various WiFi-based attack techniques through its plugin architecture.
+### 🔒 Modern Wireless Network Security Assessment Framework 🔒
 
-> ⚠️ **DISCLAIMER**: This tool is intended strictly for use in controlled environments, security assessments, and training simulations with explicit authorization. Unauthorized access to computer networks is illegal and punishable under law.
+[![Python](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
+[![Flask](https://img.shields.io/badge/flask-2.0+-green.svg)](https://flask.palletsprojects.com/)
+[![License](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 
-## Features
+</div>
 
-- **Plugin-Based Architecture**: Seamlessly integrate attack modules such as WiFi recon, WPA key extraction, and captive portal phishing.
-- **Credential Harvesting**: Extract saved WiFi passwords from Windows, Linux, and macOS devices.
-- **Evil Twin Automation**: Deploy rogue APs that mimic legitimate networks and capture user credentials via phishing portals.
-- **WPA Handshake Capture**: Automate deauthentication attacks and prepare handshakes for offline password cracking.
-- **Extensible & Scriptable**: Designed for red team operators who want to expand with custom attack modules.
+---
 
-## Included Plugins
+## 📡 About
 
-- **WiFi Recon**: Scan for wireless networks, monitor traffic, and analyze WiFi data.
-- **Credential Harvester**: Extract stored WiFi credentials from various operating systems.
-- **Evil Twin**: Create rogue access points that mimic legitimate networks.
-- **WPA Handshake**: Capture and process WPA handshakes for offline cracking.
+**NullHandshake** is a cutting-edge offensive security framework for wireless network assessment, featuring a sleek, animated web interface. Security researchers can quickly identify vulnerable networks, extract credentials, and execute sophisticated wireless attacks - all through an intuitive, modern GUI.
 
-## Usage
+<div align="center">
+<table>
+<tr>
+<td align="center">🔍 <b>Network Discovery</b></td>
+<td align="center">🔑 <b>Credential Extraction</b></td>
+<td align="center">📶 <b>Evil Twin Attacks</b></td>
+<td align="center">🔐 <b>WPA Handshake Capture</b></td>
+</tr>
+</table>
+</div>
 
-### CLI Interface
+## ✨ Key Features
 
-You can use NullHandshake through its interactive CLI interface:
+- **🎨 Futuristic Web Interface** - Beautiful, animated UI with no CLI dependency
+- **🧩 Plugin Architecture** - Modular design with self-contained attack vectors
+- **💻 Cross-Platform Support** - Extract credentials from Windows, Linux, and macOS 
+- **🔄 Real-Time Monitoring** - Live scanning and interactive network analysis
+- **🖥️ Interactive Console** - Built-in terminal with command history and autocomplete
+- **📊 Visual Analytics** - Data visualization for discovered networks and devices
+- **⚡ Smooth Animations** - Polished transitions and feedback throughout the application
 
+## 🧰 Modules
+
+<details>
+<summary><b>🔍 WiFi Recon</b></summary>
+<br>
+Discover and analyze wireless networks with comprehensive signal mapping, client enumeration, and vulnerability assessment.
+
+**Key capabilities:**
+- Network discovery and classification
+- Signal strength mapping
+- Client device enumeration
+- Security protocol analysis
+</details>
+
+<details>
+<summary><b>🔑 Credential Harvester</b></summary>
+<br>
+Extract and manage network credentials across operating systems with seamless integration to post-exploitation workflows.
+
+**Key capabilities:**
+- Multi-OS credential extraction
+- Saved password recovery
+- Credential organization and filtering
+- Export in multiple formats
+</details>
+
+<details>
+<summary><b>📶 Evil Twin</b></summary>
+<br>
+Create and manage rogue access points with custom captive portals for man-in-the-middle assessment scenarios.
+
+**Key capabilities:**
+- One-click AP deployment
+- Custom captive portal templates
+- Client connection management
+- Traffic capture and analysis
+</details>
+
+<details>
+<summary><b>🔐 WPA Handshake</b></summary>
+<br>
+Automated discovery and capture of WPA/WPA2 handshakes for security analysis and offline testing.
+
+**Key capabilities:**
+- Target AP prioritization
+- Automated client deauthentication
+- PMKID attack support
+- Handshake validation and export
+</details>
+
+## 🚀 Quick Start
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/nullhandshake.git
+cd nullhandshake
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Launch the web interface
+python main.py
+```
+
+## 🖥️ Usage
+
+### Web Interface
+
+Access the intuitive web dashboard at http://localhost:5000
+
+### Command Line
+
+For traditional CLI usage:
 ```bash
 python nullhandshake.py
 ```
 
-This will open the interactive console where you can type commands:
+## 🛠️ Requirements
 
-```
-[nullhandshake] > help
-```
+- Python 3.9+
+- Flask 2.0+
+- Flask-SQLAlchemy
+- Scapy
+- netifaces
 
-### Single Command Execution
+## 🔄 Workflows
 
-To execute a single command and exit:
+NullHandshake supports seamless workflows between modules:
+1. **Discover** networks with WiFi Recon
+2. **Deploy** Evil Twin based on discovered networks
+3. **Capture** credentials or handshakes
+4. **Export** results for further analysis
 
-```bash
-python run.py "command"
-```
+## ⚠️ Legal Disclaimer
 
-For example:
+**NullHandshake** is designed for authorized security testing only. Users must comply with all applicable laws and regulations. The developers assume no liability for misuse or damage caused by this software.
 
-```bash
-python run.py "plugins"
-python run.py "load wifirecon"
-python run.py "help"
-```
+## 👥 Contributing
 
-### Common Commands
+Contributions are welcome! Please check out our [contribution guidelines](CONTRIBUTING.md) to get started.
 
-- `help` - Display the help menu showing all available commands
-- `plugins` - List all available plugins in the framework
-- `load <plugin_name>` - Load and activate a specific plugin
-- `unload` - Unload the currently active plugin
-- `plugin_help` - Show detailed help for the active plugin
-- `config` - View or set configuration options
-- `exit` or `quit` - Exit the program
+## 📄 License
 
-## Plugin-Specific Commands
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-Each plugin provides its own set of commands. After loading a plugin, use `plugin_help` to see available commands.
+---
 
-Example for WiFi Recon plugin:
-
-```
-[nullhandshake] > load wifirecon
-Plugin 'wifirecon' activated successfully
-[nullhandshake] > plugin_help
-```
-
-## Requirements
-
-- Python 3.10+
-- Required Python packages:
-  - scapy
-  - rich
-  - netifaces
-  - flask
-  - typer
-
-Some plugins may require root/admin privileges to function properly, especially those interacting with network interfaces.
-
-## License
-
-This project is intended for educational and ethical security research purposes only.
-
-## Authors
-
-Security research and penetration testing team.
+<div align="center">
+<p>Built with ❤️ for the security research community</p>
+</div>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NullHandshake - Wireless Post-Exploitation Framework</title>
+  
+  <!-- Bootstrap CSS (Dark Theme) -->
+  <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+  
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .sidebar {
+      background-color: var(--bs-dark);
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+      height: calc(100vh - 56px);
+    }
+    
+    .sidebar-sticky {
+      position: sticky;
+      top: 0;
+      height: calc(100vh - 56px);
+      padding-top: 1rem;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+    
+    .logo-text {
+      font-family: monospace;
+      letter-spacing: -1px;
+    }
+    
+    .nav-link.active {
+      background-color: var(--bs-primary);
+      color: white;
+    }
+    
+    .main-content {
+      padding: 20px;
+    }
+    
+    .hero-section {
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2000&q=80');
+      background-size: cover;
+      background-position: center;
+      color: white;
+      padding: 80px 0;
+      border-radius: 5px;
+      margin-bottom: 30px;
+    }
+    
+    .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: var(--bs-primary);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{{ url_for('index') }}">
+        <i class="fas fa-wifi me-2"></i>
+        <span class="logo-text">NullHandshake</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('dashboard') }}">
+              <i class="fas fa-tachometer-alt me-1"></i> Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('command_history') }}">
+              <i class="fas fa-history me-1"></i> History
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('help_page') }}">
+              <i class="fas fa-question-circle me-1"></i> Help
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('logout') }}">
+              <i class="fas fa-sign-out-alt me-1"></i> Logout
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- Main Content -->
+  <div class="container mt-4">
+    <!-- Hero Section -->
+    <section class="hero-section text-center">
+      <h1 class="display-4">NullHandshake</h1>
+      <p class="lead">Modular, Plugin-driven Offensive Security Framework</p>
+      <p class="mb-4">Designed for WiFi network post-exploitation and credential harvesting</p>
+      <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg">
+        <i class="fas fa-terminal me-2"></i> Go to Dashboard
+      </a>
+    </section>
+    
+    <!-- Features Section -->
+    <section class="mb-5">
+      <h2 class="text-center mb-4">Key Features</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-body text-center">
+              <div class="feature-icon">
+                <i class="fas fa-plug"></i>
+              </div>
+              <h5 class="card-title">Plugin-Based Architecture</h5>
+              <p class="card-text">Seamlessly integrate attack modules such as WiFi recon, WPA key extraction, and captive portal phishing.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-body text-center">
+              <div class="feature-icon">
+                <i class="fas fa-key"></i>
+              </div>
+              <h5 class="card-title">Credential Harvesting</h5>
+              <p class="card-text">Extract saved WiFi passwords from Windows, Linux, and macOS devices.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-body text-center">
+              <div class="feature-icon">
+                <i class="fas fa-network-wired"></i>
+              </div>
+              <h5 class="card-title">Evil Twin Automation</h5>
+              <p class="card-text">Deploy rogue APs that mimic legitimate networks and capture user credentials via phishing portals.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-6">
+          <div class="card h-100">
+            <div class="card-body text-center">
+              <div class="feature-icon">
+                <i class="fas fa-lock"></i>
+              </div>
+              <h5 class="card-title">WPA Handshake Capture</h5>
+              <p class="card-text">Automate deauthentication attacks and prepare handshakes for offline password cracking.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-6">
+          <div class="card h-100">
+            <div class="card-body text-center">
+              <div class="feature-icon">
+                <i class="fas fa-code"></i>
+              </div>
+              <h5 class="card-title">Extensible & Scriptable</h5>
+              <p class="card-text">Designed for red team operators who want to expand with custom attack modules.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Warning Section -->
+    <section class="alert alert-danger mb-5">
+      <div class="row align-items-center">
+        <div class="col-auto">
+          <i class="fas fa-exclamation-triangle fa-2x"></i>
+        </div>
+        <div class="col">
+          <h4>Important Disclaimer</h4>
+          <p class="mb-0">NullHandshake is intended strictly for use in controlled environments, security assessments, and training simulations with explicit authorization. Unauthorized access to computer networks is illegal and punishable under law.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+  <!-- Footer -->
+  <footer class="bg-dark text-white text-center py-3 mt-auto">
+    <div class="container">
+      <small>NullHandshake &copy; 2025 | Wireless Network Post-Exploitation Framework</small>
+    </div>
+  </footer>
+  
+  <!-- Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

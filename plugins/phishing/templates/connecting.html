@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}Connecting to {{ ssid }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card">
+        <div class="card-header bg-primary text-white text-center">
+          <h4 class="mb-0">
+            <i class="fas fa-wifi me-2"></i> {{ ssid }} Network
+          </h4>
+        </div>
+        <div class="card-body text-center py-5">
+          <div class="spinner-border text-primary mb-4" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          
+          <h4 id="status-message">Connecting to network...</h4>
+          <p class="text-muted" id="status-details">Verifying credentials...</p>
+          
+          <div class="progress mt-4 mb-2">
+            <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 25%"></div>
+          </div>
+          <small class="text-muted">Please wait while we connect you to the internet</small>
+        </div>
+        
+        <div class="card-footer text-center text-muted">
+          <small>Secure connection • {{ ssid }} Network</small>
+        </div>
+      </div>
+      
+      <div class="mt-4 text-center">
+        <a href="{{ url_for('login') }}" class="text-decoration-none">Return to login</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Simulate connecting process
+  document.addEventListener('DOMContentLoaded', function() {
+    const statusMessage = document.getElementById('status-message');
+    const statusDetails = document.getElementById('status-details');
+    const progressBar = document.getElementById('progress-bar');
+    
+    const statusMessages = [
+      { message: "Connecting to network...", details: "Verifying credentials...", progress: 25 },
+      { message: "Establishing connection...", details: "Checking network availability...", progress: 50 },
+      { message: "Obtaining IP address...", details: "Communicating with DHCP server...", progress: 75 },
+      { message: "Connection failed", details: "Authentication error. Please try again.", progress: 100 }
+    ];
+    
+    let currentStep = 0;
+    
+    const interval = setInterval(() => {
+      if (currentStep < statusMessages.length) {
+        const status = statusMessages[currentStep];
+        statusMessage.textContent = status.message;
+        statusDetails.textContent = status.details;
+        progressBar.style.width = status.progress + '%';
+        
+        if (currentStep === statusMessages.length - 1) {
+          progressBar.classList.remove('progress-bar-animated');
+          progressBar.classList.remove('bg-primary');
+          progressBar.classList.add('bg-danger');
+          clearInterval(interval);
+          
+          // Redirect back to login after 3 seconds
+          setTimeout(() => {
+            window.location.href = "{{ url_for('login') }}";
+          }, 3000);
+        }
+        
+        currentStep++;
+      }
+    }, 1500);
+
+    // Simulated API checks
+    setTimeout(() => {
+      fetch('/check-status')
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'failed') {
+            statusMessage.textContent = "Connection failed";
+            statusDetails.textContent = data.message;
+            progressBar.classList.remove('progress-bar-animated');
+            progressBar.classList.remove('bg-primary');
+            progressBar.classList.add('bg-danger');
+            clearInterval(interval);
+            
+            // Redirect back to login after 3 seconds
+            setTimeout(() => {
+              window.location.href = "{{ url_for('login') }}";
+            }, 3000);
+          }
+        })
+        .catch(() => {
+          // Error handling - just continue with the simulation
+        });
+    }, 5000);
+  });
+</script>
+{% endblock %}

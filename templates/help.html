@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Help & Documentation - NullHandshake</title>
+  
+  <!-- Bootstrap CSS (Dark Theme) -->
+  <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+  
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --primary-color: #3ec1d3;
+      --secondary-color: #ff9a3c;
+      --accent-color: #ff165d;
+      --dark-bg: #0e153a;
+      --card-bg: rgba(30, 39, 97, 0.6);
+      --text-primary: #ffffff;
+      --text-secondary: #b3b3b3;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--dark-bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      background-image: 
+        radial-gradient(circle at 20% 35%, rgba(62, 193, 211, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 75% 60%, rgba(255, 154, 60, 0.15) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+    
+    .navbar {
+      background: linear-gradient(90deg, rgba(14, 21, 58, 0.95) 0%, rgba(30, 39, 97, 0.95) 100%);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+    }
+    
+    .logo {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+      letter-spacing: -1px;
+      font-size: 1.5rem;
+    }
+
+    .logo i {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .navbar .nav-link {
+      color: var(--text-primary);
+      margin: 0 10px;
+      position: relative;
+      transition: color 0.3s;
+    }
+    
+    .navbar .nav-link:before {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      transition: width 0.3s;
+    }
+    
+    .navbar .nav-link:hover {
+      color: var(--primary-color);
+    }
+    
+    .navbar .nav-link:hover:before {
+      width: 100%;
+    }
+    
+    .navbar .nav-link.active:before {
+      width: 100%;
+    }
+    
+    .main-content {
+      padding: 30px 0;
+    }
+    
+    .section-title {
+      font-weight: 700;
+      margin-bottom: 25px;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .section-title:after {
+      content: '';
+      position: absolute;
+      width: 50%;
+      height: 3px;
+      bottom: -8px;
+      left: 0;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      border-radius: 2px;
+    }
+    
+    .card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 15px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .card:hover {
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .card-header {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .help-header {
+      padding: 40px 0;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 30px;
+      border-radius: 15px;
+      background: linear-gradient(135deg, rgba(62, 193, 211, 0.2) 0%, rgba(255, 154, 60, 0.2) 100%);
+    }
+    
+    .btn-primary {
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      border: none;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+    }
+    
+    .help-card {
+      transition: all 0.3s;
+    }
+    
+    .help-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .help-icon {
+      height: 60px;
+      width: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      margin-right: 15px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .terminal {
+      background-color: #1a1a1a;
+      border-radius: 15px;
+      color: #f8f8f8;
+      font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+      padding: 20px;
+      height: 400px;
+      overflow-y: auto;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .terminal pre {
+      margin: 0;
+      white-space: pre-wrap;
+      color: inherit;
+    }
+    
+    footer {
+      background: linear-gradient(90deg, rgba(14, 21, 58, 0.95) 0%, rgba(30, 39, 97, 0.95) 100%);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-secondary);
+      padding: 20px 0;
+      margin-top: 50px;
+    }
+    
+    /* Tab Navigation */
+    .custom-tab {
+      padding: 15px 20px;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      color: var(--text-secondary);
+      position: relative;
+      transition: all 0.3s;
+    }
+    
+    .custom-tab:before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      transition: width 0.3s;
+    }
+    
+    .custom-tab:hover {
+      color: var(--text-primary);
+    }
+    
+    .custom-tab.active {
+      color: var(--primary-color);
+      background: transparent;
+    }
+    
+    .custom-tab.active:before {
+      width: 100%;
+    }
+    
+    .tab-pane {
+      padding: 20px 0;
+    }
+    
+    /* Code blocks */
+    code {
+      background: rgba(0, 0, 0, 0.2);
+      color: var(--primary-color);
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+    }
+    
+    pre {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      padding: 15px;
+      color: var(--text-primary);
+      font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+    }
+    
+    .command-block {
+      background: #1a1a1a;
+      border-left: 3px solid var(--primary-color);
+      border-radius: 5px;
+      padding: 10px 15px;
+      margin-bottom: 10px;
+      font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+    }
+    
+    .module-badge {
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 30px;
+      padding: 8px 12px;
+      font-size: 0.8rem;
+      margin-right: 8px;
+      margin-bottom: 8px;
+      display: inline-block;
+      transition: all 0.3s;
+    }
+    
+    .module-badge:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      background: linear-gradient(90deg, rgba(62, 193, 211, 0.1), rgba(255, 154, 60, 0.1));
+    }
+    
+    .module-badge i {
+      color: var(--primary-color);
+      margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="{{ url_for('dashboard') }}">
+        <span class="logo"><i class="fas fa-wifi me-2"></i>NullHandshake</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('dashboard') }}">
+              <i class="fas fa-home me-1"></i> Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('scan_view') }}">
+              <i class="fas fa-broadcast-tower me-1"></i> WiFi Scan
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{{ url_for('help_page') }}">
+              <i class="fas fa-question-circle me-1"></i> Help
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- Help Header -->
+  <div class="help-header">
+    <div class="container text-center">
+      <h1 class="mb-3"><i class="fas fa-book me-2"></i> Documentation & Help</h1>
+      <p class="lead">Find guides, tutorials, and documentation about using NullHandshake</p>
+    </div>
+  </div>
+  
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="container">
+      <!-- Tab Navigation -->
+      <ul class="nav nav-tabs mb-4" id="helpTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link custom-tab active" id="getting-started-tab" data-bs-toggle="tab" data-bs-target="#getting-started" type="button" role="tab">
+            <i class="fas fa-rocket me-2"></i> Getting Started
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link custom-tab" id="modules-tab" data-bs-toggle="tab" data-bs-target="#modules" type="button" role="tab">
+            <i class="fas fa-cubes me-2"></i> Modules
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link custom-tab" id="examples-tab" data-bs-toggle="tab" data-bs-target="#examples" type="button" role="tab">
+            <i class="fas fa-clipboard-list me-2"></i> Examples
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link custom-tab" id="requirements-tab" data-bs-toggle="tab" data-bs-target="#requirements" type="button" role="tab">
+            <i class="fas fa-cogs me-2"></i> Requirements
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link custom-tab" id="faq-tab" data-bs-toggle="tab" data-bs-target="#faq" type="button" role="tab">
+            <i class="fas fa-question-circle me-2"></i> FAQ
+          </button>
+        </li>
+      </ul>
+      
+      <!-- Tab Content -->
+      <div class="tab-content" id="helpTabsContent">
+        <!-- Getting Started Tab -->
+        <div class="tab-pane fade show active" id="getting-started" role="tabpanel">
+          <h4 class="section-title">Getting Started with NullHandshake</h4>
+          
+          <div class="row mb-4">
+            <div class="col-lg-8">
+              <div class="card mb-4">
+                <div class="card-header">
+                  <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i> About NullHandshake</h5>
+                </div>
+                <div class="card-body">
+                  <p>NullHandshake is a powerful wireless network post-exploitation framework designed for security researchers and penetration testers. It provides a unified interface for various WiFi-based attack techniques through its plugin architecture.</p>
+                  
+                  <p>The framework is built around a modular design, allowing you to leverage different attack vectors through specialized modules:</p>
+                  
+                  <div class="d-flex flex-wrap mb-3">
+                    <a href="{{ url_for('plugin_view', plugin_id='wifirecon') }}" class="module-badge">
+                      <i class="fas fa-broadcast-tower"></i> WiFi Recon
+                    </a>
+                    <a href="{{ url_for('plugin_view', plugin_id='credentialharvester') }}" class="module-badge">
+                      <i class="fas fa-key"></i> Credential Harvester
+                    </a>
+                    <a href="{{ url_for('plugin_view', plugin_id='eviltwin') }}" class="module-badge">
+                      <i class="fas fa-clone"></i> Evil Twin
+                    </a>
+                    <a href="{{ url_for('plugin_view', plugin_id='wpahandshake') }}" class="module-badge">
+                      <i class="fas fa-lock"></i> WPA Handshake
+                    </a>
+                  </div>
+                  
+                  <div class="alert alert-warning">
+                    <h6 class="alert-heading"><i class="fas fa-exclamation-triangle me-2"></i> Disclaimer</h6>
+                    <p class="mb-0">This tool is intended for use in controlled environments with explicit authorization. Unauthorized access to computer networks is illegal and punishable under law.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="mb-0"><i class="fas fa-clipboard-check me-2"></i> Quick Start Guide</h5>
+                </div>
+                <div class="card-body">
+                  <h6 class="mb-3">1. Choose a Module</h6>
+                  <p>Start by selecting a module from the dashboard based on your objective:</p>
+                  <ul>
+                    <li><strong>WiFi Recon</strong> - For scanning and analyzing wireless networks</li>
+                    <li><strong>Credential Harvester</strong> - For extracting stored WiFi credentials</li>
+                    <li><strong>Evil Twin</strong> - For creating rogue access points</li>
+                    <li><strong>WPA Handshake</strong> - For capturing and cracking WPA handshakes</li>
+                  </ul>
+                  
+                  <h6 class="mb-3">2. Configure Your Interface</h6>
+                  <p>Most modules require selecting a wireless interface. Connect a compatible wireless adapter and select it in the module interface.</p>
+                  <div class="command-block">list_interfaces</div>
+                  <div class="command-block">set_interface wlan0</div>
+                  
+                  <h6 class="mb-3">3. Run Commands</h6>
+                  <p>Each module has specific commands. Use the console interface or quick command buttons to execute operations.</p>
+                  
+                  <h6 class="mb-3">4. Review Results</h6>
+                  <p>Results will be displayed in the console output. You can save or export data for further analysis.</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-lg-4">
+              <div class="card mb-4">
+                <div class="card-header">
+                  <h5 class="mb-0"><i class="fas fa-lightbulb me-2"></i> Tips</h5>
+                </div>
+                <div class="card-body">
+                  <ul class="list-unstyled">
+                    <li class="mb-3">
+                      <i class="fas fa-check-circle text-success me-2"></i>
+                      Use the WiFi Scan page for a quick overview of nearby networks
+                    </li>
+                    <li class="mb-3">
+                      <i class="fas fa-check-circle text-success me-2"></i>
+                      Each module has detailed documentation on its page
+                    </li>
+                    <li class="mb-3">
+                      <i class="fas fa-check-circle text-success me-2"></i>
+                      For better results, use wireless adapters that support monitor mode
+                    </li>
+                    <li class="mb-3">
+                      <i class="fas fa-check-circle text-success me-2"></i>
+                      Save scan results regularly when conducting field assessments
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="mb-0"><i class="fas fa-link me-2"></i> Useful Links</h5>
+                </div>
+                <div class="card-body">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item bg-transparent border-bottom border-secondary">
+                      <a href="#" class="d-flex align-items-center text-decoration-none text-light">
+                        <i class="fas fa-book me-2 text-primary"></i> Full Documentation
+                      </a>
+                    </li>
+                    <li class="list-group-item bg-transparent border-bottom border-secondary">
+                      <a href="#" class="d-flex align-items-center text-decoration-none text-light">
+                        <i class="fas fa-code me-2 text-primary"></i> GitHub Repository
+                      </a>
+                    </li>
+                    <li class="list-group-item bg-transparent border-bottom border-secondary">
+                      <a href="#" class="d-flex align-items-center text-decoration-none text-light">
+                        <i class="fas fa-tools me-2 text-primary"></i> Compatible Hardware
+                      </a>
+                    </li>
+                    <li class="list-group-item bg-transparent">
+                      <a href="#" class="d-flex align-items-center text-decoration-none text-light">
+                        <i class="fas fa-graduation-cap me-2 text-primary"></i> Tutorial Videos
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Modules Tab -->
+        <div class="tab-pane fade" id="modules" role="tabpanel">
+          <h4 class="section-title">Available Modules</h4>
+          
+          <div class="row g-4">
+            {% for plugin in plugins %}
+            <div class="col-md-6">
+              <div class="card help-card h-100">
+                <div class="card-header">
+                  <h5 class="mb-0">
+                    <i class="{{ plugin.icon }} me-2 {{ plugin.color }}"></i> {{ plugin.name }}
+                  </h5>
+                </div>
+                <div class="card-body">
+                  <p>{{ plugin.description }}</p>
+                  
+                  <h6 class="mb-2">Key Features:</h6>
+                  {% if plugin.id == 'wifirecon' %}
+                    <ul>
+                      <li>Scan and discover wireless networks</li>
+                      <li>Monitor client devices and connections</li>
+                      <li>Analyze network security settings</li>
+                      <li>Capture probe requests and responses</li>
+                    </ul>
+                  {% elif plugin.id == 'credentialharvester' %}
+                    <ul>
+                      <li>Extract WiFi passwords from Windows systems</li>
+                      <li>Extract WiFi passwords from macOS systems</li>
+                      <li>Extract WiFi passwords from Linux systems</li>
+                      <li>Export credentials in various formats</li>
+                    </ul>
+                  {% elif plugin.id == 'eviltwin' %}
+                    <ul>
+                      <li>Create rogue access points mimicking legitimate networks</li>
+                      <li>Deploy captive portal for credential harvesting</li>
+                      <li>Customize phishing pages for different services</li>
+                      <li>Capture and log authentication attempts</li>
+                    </ul>
+                  {% elif plugin.id == 'wpahandshake' %}
+                    <ul>
+                      <li>Capture WPA/WPA2 handshakes</li>
+                      <li>Perform deauthentication attacks</li>
+                      <li>Export handshakes for offline cracking</li>
+                      <li>Target specific clients or entire networks</li>
+                    </ul>
+                  {% endif %}
+                  
+                  <h6 class="mb-2">Common Commands:</h6>
+                  {% if plugin.id == 'wifirecon' %}
+                    <div class="command-block">list_interfaces</div>
+                    <div class="command-block">set_interface wlan0</div>
+                    <div class="command-block">scan</div>
+                    <div class="command-block">show_networks</div>
+                  {% elif plugin.id == 'credentialharvester' %}
+                    <div class="command-block">extract_credentials</div>
+                    <div class="command-block">show_credentials</div>
+                    <div class="command-block">save_credentials output.txt</div>
+                  {% elif plugin.id == 'eviltwin' %}
+                    <div class="command-block">list_interfaces</div>
+                    <div class="command-block">set_interface wlan0</div>
+                    <div class="command-block">setup_ap</div>
+                    <div class="command-block">start_ap</div>
+                  {% elif plugin.id == 'wpahandshake' %}
+                    <div class="command-block">list_interfaces</div>
+                    <div class="command-block">set_interface wlan0</div>
+                    <div class="command-block">scan_for_targets</div>
+                    <div class="command-block">capture_handshake</div>
+                  {% endif %}
+                  
+                  <div class="mt-3">
+                    <a href="{{ url_for('plugin_view', plugin_id=plugin.id) }}" class="btn btn-primary">
+                      <i class="fas fa-plug me-2"></i> Launch Module
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        
+        <!-- Examples Tab -->
+        <div class="tab-pane fade" id="examples" role="tabpanel">
+          <h4 class="section-title">Example Scenarios</h4>
+          
+          <div class="row g-4 mb-4">
+            <div class="col-lg-6">
+              <div class="card h-100">
+                <div class="card-header">
+                  <h5 class="mb-0"><i class="fas fa-search me-2"></i> Network Reconnaissance</h5>
+                </div>
+                <div class="card-body">
+                  <h6 class="mb-3">Scenario: Identifying All Networks in Range</h6>
+                  <p>This example demonstrates how to scan for and catalog all wireless networks in your vicinity.</p>
+                  
+                  <ol>
+                    <li class="mb-2">Launch the <strong>WiFi Recon</strong> module</li>
+                    <li class="mb-2">Check available interfaces and set your wireless adapter:</li>
+                    <div class="command-block">list_interfaces</div>
+                    <div class="command-block">set_interface wlan0</div>
+                    <li class="mb-2">Start scanning and enable channel hopping:</li>
+                    <div class="command-block">start_channel_hopping</div>
+                    <div class="command-block">scan</div>
+                    <li class="mb-2">After a few minutes, view the discovered networks:</li>
+                    <div class="command-block">show_networks</div>
+                    <li class="mb-2">Save the results to a file:</li>
+                    <div class="command-block">save_results scan_results.txt</div>
+                  </ol>
+                  
+                  <h6 class="mt-4 mb-3">Outcome:</h6>
+                  <p>A comprehensive list of networks with details about their security settings, signal strength, channels, and BSSIDs that can be used for further analysis.</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-lg-6">
+              <div class="card h-100">
+                <div class="card-header">
+                  <h5 class="mb-0"><i class="fas fa-key me-2"></i> Password Recovery</h5>
+                </div>
+                <div class="card-body">
+                  <h6 class="mb-3">Scenario: Recovering Forgotten WiFi Passwords</h6>
+                  <p>This example shows how to recover WiFi passwords that are stored on your system.</p>
+                  
+                  <ol>
+                    <li class="mb-2">Launch the <strong>Credential Harvester</strong> module</li>
+                    <li class="mb-2">Extract stored credentials:</li>
+                    <div class="command-block">extract_credentials</div>
+                    <li class="mb-2">View the extracted passwords:</li>
+                    <div class="command-block">show_credentials</div>
+                    <li class="mb-2">Save the credentials to a file:</li>
+                    <div class="command-block">save_credentials wifi_passwords.txt</div>
+                  </ol>
+                  
+                  <h6 class="mt-4 mb-3">Outcome:</h6>
+                  <p>A list of all WiFi networks and their corresponding passwords that are stored on your system, allowing you to recover forgotten credentials.</p>
+                  
+                  <div class="alert alert-info mt-3">
+                    <i class="fas fa-info-circle me-2"></i> This functionality works across Windows, macOS, and Linux platforms, retrieving stored credentials from the system's password storage.
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-lg-6">
+              <div class="card h-100">
+                <div class="card-header">
+                  <h5 class="mb-0"><i class="fas fa-lock me-2"></i> WPA Handshake Capture</h5>
+                </div>
+                <div class="card-body">
+                  <h6 class="mb-3">Scenario: Capturing WPA Handshakes for Password Recovery</h6>
+                  <p>This example demonstrates how to capture WPA handshakes that can be used for offline password recovery.</p>
+                  
+                  <ol>
+                    <li class="mb-2">Launch the <strong>WPA Handshake</strong> module</li>
+                    <li class="mb-2">Set up your wireless interface:</li>
+                    <div class="command-block">list_interfaces</div>
+                    <div class="command-block">set_interface wlan0</div>
+                    <li class="mb-2">Scan for target networks:</li>
+                    <div class="command-block">scan_for_targets</div>
+                    <li class="mb-2">Set a target network:</li>
+                    <div class="command-block">set_target 00:11:22:33:44:55</div>
+                    <li class="mb-2">Start capturing handshakes:</li>
+                    <div class="command-block">capture_handshake</div>
+                    <li class="mb-2">After capturing, export the handshake:</li>
+                    <div class="command-block">export_handshake wpa_capture.cap</div>
+                  </ol>
+                  
+                  <h6 class="mt-4 mb-3">Outcome:</h6>
+                  <p>A captured WPA handshake that can be used with offline password cracking tools to recover the network password.</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-lg-6">
+              <div class="card h-100">
+                <div class="card-header">
+                  <h5 class="mb-0"><i class="fas fa-clone me-2"></i> Evil Twin Attack</h5>
+                </div>
+                <div class="card-body">
+                  <h6 class="mb-3">Scenario: Setting Up a Rogue Access Point</h6>
+                  <p>This example shows how to create a rogue access point that mimics a legitimate network for security testing.</p>
+                  
+                  <ol>
+                    <li class="mb-2">Launch the <strong>Evil Twin</strong> module</li>
+                    <li class="mb-2">Configure your wireless interface:</li>
+                    <div class="command-block">list_interfaces</div>
+                    <div class="command-block">set_interface wlan0</div>
+                    <li class="mb-2">Scan for potential target networks:</li>
+                    <div class="command-block">scan_for_targets</div>
+                    <li class="mb-2">Select a target network to clone:</li>
+                    <div class="command-block">set_target 00:11:22:33:44:55</div>
+                    <li class="mb-2">Set up the rogue access point:</li>
+                    <div class="command-block">setup_ap</div>
+                    <li class="mb-2">Start the access point:</li>
+                    <div class="command-block">start_ap</div>
+                    <li class="mb-2">Monitor for captured credentials:</li>
+                    <div class="command-block">show_captured_credentials</div>
+                  </ol>
+                  
+                  <h6 class="mt-4 mb-3">Outcome:</h6>
+                  <p>A functioning rogue access point that appears identical to the target network, which can be used to test security awareness and the effectiveness of user training.</p>
+                  
+                  <div class="alert alert-danger mt-3">
+                    <i class="fas fa-exclamation-triangle me-2"></i> This functionality should only be used in controlled environments with proper authorization for security testing purposes.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Requirements Tab -->
+        <div class="tab-pane fade" id="requirements" role="tabpanel">
+          <h4 class="section-title">System Requirements</h4>
+          
+          <div class="row g-4">
+            <div class="col-lg-6">
+              <div class="card mb-4">
+                <div class="card-header">
+                  <h5 class="mb-0"><i class="fas fa-laptop me-2"></i> Software Requirements</h5>
+                </div>
+                <div class="card-body">
+                  <h6 class="mb-3">Operating Systems</h6>
+                  <ul>
+                    <li>Linux (recommended for full feature support)</li>
+                    <li>Windows 10/11 (limited monitor mode support)</li>
+                    <li>macOS (limited monitor mode support)</li>
+                  </ul>
+                  
+                  <h6 class="mb-3">Required Software</h6>
+                  <ul>
+                    <li>Python 3.10 or higher</li>
+                    <li>Scapy</li>
+                    <li>Flask</li>
+                    <li>SQLAlchemy</li>
+                    <li>Netifaces</li>
+                    <li>Rich (for terminal formatting)</li>
+                  </ul>
+                  
+                  <h6 class="mb-3">Linux Dependencies</h6>
+                  <p>For full functionality on Linux, the following packages are recommended:</p>
+                  <ul>
+                    <li>aircrack-ng</li>
+                    <li>hostapd</li>
+                    <li>dnsmasq</li>
+                    <li>iptables</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-lg-6">
+              <div class="card mb-4">
+                <div class="card-header">
+                  <h5 class="mb-0"><i class="fas fa-microchip me-2"></i> Hardware Requirements</h5>
+                </div>
+                <div class="card-body">
+                  <h6 class="mb-3">Wireless Adapters</h6>
+                  <p>For the best experience, use a wireless adapter that supports monitor mode and packet injection. Recommended adapters include:</p>
+                  
+                  <ul>
+                    <li>Alfa AWUS036ACH (802.11ac)</li>
+                    <li>Alfa AWUS036NHA (802.11n)</li>
+                    <li>TP-Link TL-WN722N (V1 only)</li>
+                    <li>Panda PAU09</li>
+                  </ul>
+                  
+                  <h6 class="mb-3">Minimum System Specifications</h6>
+                  <ul>
+                    <li>CPU: Dual-core processor</li>
+                    <li>RAM: 4GB minimum, 8GB recommended</li>
+                    <li>Storage: 1GB free space</li>
+                    <li>Network: At least one compatible wireless adapter</li>
+                  </ul>
+                  
+                  <div class="alert alert-info mt-3">
+                    <i class="fas fa-info-circle me-2"></i> For more intensive operations like WPA handshake cracking, a multi-core processor and additional RAM will significantly improve performance.
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="mb-0"><i class="fas fa-check-circle me-2"></i> Compatibility Matrix</h5>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>Module</th>
+                          <th>Linux</th>
+                          <th>Windows</th>
+                          <th>macOS</th>
+                          <th>Monitor Mode Required</th>
+                          <th>Packet Injection Required</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>WiFi Recon</td>
+                          <td><i class="fas fa-check text-success"></i> Full</td>
+                          <td><i class="fas fa-check text-success"></i> Full</td>
+                          <td><i class="fas fa-check text-success"></i> Full</td>
+                          <td><i class="fas fa-check text-success"></i> Yes</td>
+                          <td><i class="fas fa-times text-danger"></i> No</td>
+                        </tr>
+                        <tr>
+                          <td>Credential Harvester</td>
+                          <td><i class="fas fa-check text-success"></i> Full</td>
+                          <td><i class="fas fa-check text-success"></i> Full</td>
+                          <td><i class="fas fa-check text-success"></i> Full</td>
+                          <td><i class="fas fa-times text-danger"></i> No</td>
+                          <td><i class="fas fa-times text-danger"></i> No</td>
+                        </tr>
+                        <tr>
+                          <td>Evil Twin</td>
+                          <td><i class="fas fa-check text-success"></i> Full</td>
+                          <td><i class="fas fa-exclamation-triangle text-warning"></i> Limited</td>
+                          <td><i class="fas fa-exclamation-triangle text-warning"></i> Limited</td>
+                          <td><i class="fas fa-check text-success"></i> Yes</td>
+                          <td><i class="fas fa-check text-success"></i> Yes</td>
+                        </tr>
+                        <tr>
+                          <td>WPA Handshake</td>
+                          <td><i class="fas fa-check text-success"></i> Full</td>
+                          <td><i class="fas fa-exclamation-triangle text-warning"></i> Limited</td>
+                          <td><i class="fas fa-exclamation-triangle text-warning"></i> Limited</td>
+                          <td><i class="fas fa-check text-success"></i> Yes</td>
+                          <td><i class="fas fa-check text-success"></i> Yes</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- FAQ Tab -->
+        <div class="tab-pane fade" id="faq" role="tabpanel">
+          <h4 class="section-title">Frequently Asked Questions</h4>
+          
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="accordion" id="faqAccordion">
+                <div class="accordion-item bg-transparent border-0 mb-3">
+                  <h2 class="accordion-header" id="faqOne">
+                    <button class="accordion-button collapsed bg-transparent text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                      <i class="fas fa-question-circle me-2 text-primary"></i> What is NullHandshake and what can it do?
+                    </button>
+                  </h2>
+                  <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body text-light">
+                      <p>NullHandshake is a modular wireless network post-exploitation framework designed for security researchers and penetration testers. It provides tools for:</p>
+                      <ul>
+                        <li>Scanning and analyzing wireless networks</li>
+                        <li>Extracting stored WiFi credentials from various operating systems</li>
+                        <li>Creating rogue access points (Evil Twin attacks)</li>
+                        <li>Capturing WPA handshakes for offline password recovery</li>
+                      </ul>
+                      <p>The framework is designed to be modular, extensible, and easy to use through both a command-line and graphical interface.</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="accordion-item bg-transparent border-0 mb-3">
+                  <h2 class="accordion-header" id="faqTwo">
+                    <button class="accordion-button collapsed bg-transparent text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                      <i class="fas fa-question-circle me-2 text-primary"></i> What kind of wireless adapter do I need?
+                    </button>
+                  </h2>
+                  <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body text-light">
+                      <p>For basic functionality like credential harvesting, any built-in wireless adapter will work. However, for advanced features like WiFi scanning, Evil Twin attacks, and WPA handshake capturing, you'll need a wireless adapter that supports monitor mode and packet injection.</p>
+                      <p>Recommended adapters include:</p>
+                      <ul>
+                        <li>Alfa AWUS036ACH</li>
+                        <li>Alfa AWUS036NHA</li>
+                        <li>TP-Link TL-WN722N (V1 only)</li>
+                        <li>Panda PAU09</li>
+                      </ul>
+                      <p>These adapters have good driver support and are compatible with the Atheros, Realtek, and Ralink chipsets that support the required features.</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="accordion-item bg-transparent border-0 mb-3">
+                  <h2 class="accordion-header" id="faqThree">
+                    <button class="accordion-button collapsed bg-transparent text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                      <i class="fas fa-question-circle me-2 text-primary"></i> Is it legal to use NullHandshake?
+                    </button>
+                  </h2>
+                  <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body text-light">
+                      <p>NullHandshake, like any security tool, should only be used for legitimate purposes such as:</p>
+                      <ul>
+                        <li>Security assessments with explicit authorization</li>
+                        <li>Testing your own networks</li>
+                        <li>Educational purposes in controlled environments</li>
+                      </ul>
+                      <p>Unauthorized access to computer networks, including wireless networks, is illegal in most jurisdictions and can result in severe penalties. Always ensure you have proper authorization before testing any network that you don't own.</p>
+                      <div class="alert alert-warning mt-3">
+                        <i class="fas fa-exclamation-triangle me-2"></i> Using this tool against networks without explicit permission is illegal and unethical.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="accordion-item bg-transparent border-0 mb-3">
+                  <h2 class="accordion-header" id="faqFour">
+                    <button class="accordion-button collapsed bg-transparent text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour">
+                      <i class="fas fa-question-circle me-2 text-primary"></i> Can I use NullHandshake on Windows/macOS?
+                    </button>
+                  </h2>
+                  <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body text-light">
+                      <p>Yes, NullHandshake is designed to be cross-platform and works on:</p>
+                      <ul>
+                        <li><strong>Linux:</strong> Full support for all features</li>
+                        <li><strong>Windows:</strong> Support for most features, with limitations for monitor mode and packet injection</li>
+                        <li><strong>macOS:</strong> Support for most features, with limitations for monitor mode and packet injection</li>
+                      </ul>
+                      <p>For the best experience and full feature support, we recommend using Linux (particularly Kali Linux or Parrot OS, which come with many of the required dependencies pre-installed).</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="accordion-item bg-transparent border-0 mb-3">
+                  <h2 class="accordion-header" id="faqFive">
+                    <button class="accordion-button collapsed bg-transparent text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive">
+                      <i class="fas fa-question-circle me-2 text-primary"></i> How do I recover a WiFi password with NullHandshake?
+                    </button>
+                  </h2>
+                  <div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body text-light">
+                      <p>NullHandshake offers two main methods for WiFi password recovery:</p>
+                      
+                      <h6 class="mb-2">1. Extracting stored passwords (Credential Harvester)</h6>
+                      <p>If the password is already stored on your system:</p>
+                      <ol>
+                        <li>Launch the Credential Harvester module</li>
+                        <li>Run the <code>extract_credentials</code> command</li>
+                        <li>View the results with <code>show_credentials</code></li>
+                      </ol>
+                      
+                      <h6 class="mb-2">2. Capturing and cracking WPA handshakes</h6>
+                      <p>For networks you don't have access to:</p>
+                      <ol>
+                        <li>Launch the WPA Handshake module</li>
+                        <li>Select your interface and target network</li>
+                        <li>Capture a handshake with <code>capture_handshake</code></li>
+                        <li>Export the capture file with <code>export_handshake</code></li>
+                        <li>Use external tools like Hashcat to perform offline cracking of the handshake</li>
+                      </ol>
+                      
+                      <div class="alert alert-info mt-3">
+                        <i class="fas fa-info-circle me-2"></i> The success of password recovery depends on various factors including encryption strength and password complexity. Always ensure you have proper authorization before attempting to recover passwords for networks.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- CLI Help Section -->
+      <div class="row mt-5">
+        <div class="col-12">
+          <h4 class="section-title">Command Line Reference</h4>
+          <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h5 class="mb-0"><i class="fas fa-terminal me-2"></i> CLI Help Output</h5>
+              <button class="btn btn-sm btn-outline-secondary" id="refresh-help-btn">
+                <i class="fas fa-sync-alt me-1"></i> Refresh
+              </button>
+            </div>
+            <div class="card-body">
+              <div class="terminal">
+                <pre>{{ help_output|default('No help information available. Click refresh to load the CLI help.') }}</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <span class="logo">NullHandshake</span>
+          <small class="d-block">Wireless Network Post-Exploitation Framework</small>
+        </div>
+        <div>
+          <small>&copy; 2025 - Version 0.1.0</small>
+        </div>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Custom JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const refreshHelpBtn = document.getElementById('refresh-help-btn');
+      const terminalOutput = document.querySelector('.terminal pre');
+      
+      // Refresh help button click
+      refreshHelpBtn.addEventListener('click', function() {
+        fetch('/command', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: 'command=help'
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.output) {
+            terminalOutput.textContent = data.output;
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

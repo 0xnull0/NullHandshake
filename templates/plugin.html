@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ plugin.name }} - NullHandshake</title>
+  
+  <!-- Bootstrap CSS (Dark Theme) -->
+  <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+  
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --primary-color: #3ec1d3;
+      --secondary-color: #ff9a3c;
+      --accent-color: #ff165d;
+      --dark-bg: #0e153a;
+      --card-bg: rgba(30, 39, 97, 0.6);
+      --text-primary: #ffffff;
+      --text-secondary: #b3b3b3;
+      
+      /* Animation durations */
+      --animation-speed-slow: 1.5s;
+      --animation-speed-medium: 0.8s;
+      --animation-speed-fast: 0.4s;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--dark-bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      background-image: 
+        radial-gradient(circle at 20% 35%, rgba(62, 193, 211, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 75% 60%, rgba(255, 154, 60, 0.15) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+    
+    .navbar {
+      background: linear-gradient(90deg, rgba(14, 21, 58, 0.95) 0%, rgba(30, 39, 97, 0.95) 100%);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+    }
+    
+    .logo {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+      letter-spacing: -1px;
+      font-size: 1.5rem;
+    }
+
+    .logo i {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .navbar .nav-link {
+      color: var(--text-primary);
+      margin: 0 10px;
+      position: relative;
+      transition: color 0.3s;
+    }
+    
+    .navbar .nav-link:before {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      transition: width 0.3s;
+    }
+    
+    .navbar .nav-link:hover {
+      color: var(--primary-color);
+    }
+    
+    .navbar .nav-link:hover:before {
+      width: 100%;
+    }
+    
+    .navbar .nav-link.active:before {
+      width: 100%;
+    }
+    
+    .main-content {
+      padding: 30px 0;
+    }
+    
+    .section-title {
+      font-weight: 700;
+      margin-bottom: 25px;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .section-title:after {
+      content: '';
+      position: absolute;
+      width: 50%;
+      height: 3px;
+      bottom: -8px;
+      left: 0;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      border-radius: 2px;
+    }
+    
+    .card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 15px;
+      overflow: hidden;
+    }
+    
+    .card-header {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .plugin-header {
+      padding: 40px 0;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 30px;
+      border-radius: 15px;
+    }
+    
+    .plugin-header-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.1;
+      filter: blur(8px);
+    }
+    
+    .plugin-header-content {
+      position: relative;
+      z-index: 1;
+    }
+    
+    .plugin-icon {
+      height: 80px;
+      width: 80px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 15px;
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .terminal {
+      background-color: #1a1a1a;
+      border-radius: 15px;
+      color: #f8f8f8;
+      font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+      padding: 20px;
+      height: 400px;
+      overflow-y: auto;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .terminal pre {
+      margin: 0;
+      white-space: pre-wrap;
+      color: inherit;
+    }
+    
+    .terminal-input {
+      display: flex;
+      background-color: #1a1a1a;
+      border-radius: 50px;
+      padding: 10px 20px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .terminal-input input {
+      flex-grow: 1;
+      background-color: transparent;
+      border: none;
+      color: #f8f8f8;
+      font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+    }
+    
+    .terminal-input input:focus {
+      outline: none;
+    }
+    
+    .terminal-input-prefix {
+      color: var(--primary-color);
+      margin-right: 10px;
+      font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+    }
+    
+    .action-btn {
+      background: var(--card-bg);
+      color: var(--text-primary);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50px;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      transition: all 0.3s;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .action-btn:hover {
+      background: linear-gradient(90deg, rgba(62, 193, 211, 0.2), rgba(255, 154, 60, 0.2));
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .action-btn i {
+      margin-right: 8px;
+      color: var(--primary-color);
+    }
+    
+    .btn-primary {
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      border: none;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+    }
+    
+    .control-card {
+      transition: all 0.3s;
+    }
+    
+    .control-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    footer {
+      background: linear-gradient(90deg, rgba(14, 21, 58, 0.95) 0%, rgba(30, 39, 97, 0.95) 100%);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-secondary);
+      padding: 20px 0;
+      margin-top: 50px;
+    }
+    
+    /* Special color themes for each plugin */
+    .wifirecon-theme {
+      background: linear-gradient(135deg, #0396FF 0%, #0D47A1 100%);
+    }
+    
+    .credentialharvester-theme {
+      background: linear-gradient(135deg, #26D0CE 0%, #1A2980 100%);
+    }
+    
+    .eviltwin-theme {
+      background: linear-gradient(135deg, #FF4E50 0%, #F9D423 100%);
+    }
+    
+    .wpahandshake-theme {
+      background: linear-gradient(135deg, #B24592 0%, #F15F79 100%);
+    }
+    
+    /* Command buttons styling */
+    .command-btn {
+      margin: 5px;
+      transition: all 0.3s;
+    }
+    
+    .command-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Loading animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes slideInUp {
+      from {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    
+    @keyframes slideInRight {
+      from {
+        transform: translateX(30px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+    @keyframes zoomIn {
+      from {
+        transform: scale(0.9);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+    
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(62, 193, 211, 0.7);
+      }
+      70% {
+        box-shadow: 0 0 0 10px rgba(62, 193, 211, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(62, 193, 211, 0);
+      }
+    }
+    
+    @keyframes borderPulse {
+      0% {
+        border-color: rgba(62, 193, 211, 0.7);
+      }
+      50% {
+        border-color: rgba(255, 154, 60, 0.7);
+      }
+      100% {
+        border-color: rgba(62, 193, 211, 0.7);
+      }
+    }
+    
+    @keyframes rotation {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(359deg); }
+    }
+    
+    @keyframes typingEffect {
+      from { width: 0 }
+      to { width: 100% }
+    }
+    
+    @keyframes blinkCursor {
+      0%, 100% { border-color: transparent }
+      50% { border-color: var(--primary-color) }
+    }
+    
+    /* Animation classes */
+    .fade-in {
+      animation: fadeIn var(--animation-speed-medium) ease-out forwards;
+    }
+    
+    .slide-up {
+      animation: slideInUp var(--animation-speed-medium) ease-out forwards;
+    }
+    
+    .slide-right {
+      animation: slideInRight var(--animation-speed-medium) ease-out forwards;
+    }
+    
+    .zoom-in {
+      animation: zoomIn var(--animation-speed-medium) ease-out forwards;
+    }
+    
+    .pulse-animation {
+      animation: pulse 2s infinite;
+    }
+    
+    .border-pulse {
+      animation: borderPulse 2s infinite;
+    }
+    
+    .rotate {
+      animation: rotation 2s linear infinite;
+    }
+    
+    /* Staggered animation delays */
+    .delay-1 {
+      animation-delay: 0.1s;
+      opacity: 0;
+      animation-fill-mode: forwards;
+    }
+    
+    .delay-2 {
+      animation-delay: 0.2s;
+      opacity: 0;
+      animation-fill-mode: forwards;
+    }
+    
+    .delay-3 {
+      animation-delay: 0.3s;
+      opacity: 0;
+      animation-fill-mode: forwards;
+    }
+    
+    .delay-4 {
+      animation-delay: 0.4s;
+      opacity: 0;
+      animation-fill-mode: forwards;
+    }
+    
+    .delay-5 {
+      animation-delay: 0.5s;
+      opacity: 0;
+      animation-fill-mode: forwards;
+    }
+    
+    /* Terminal typing animation */
+    .typing-animation {
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 2px solid var(--primary-color);
+      max-width: fit-content;
+      animation: 
+        typingEffect 2s steps(40, end),
+        blinkCursor .75s step-end infinite;
+    }
+    
+    /* Command execution animation */
+    .command-executing {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    
+    .command-success {
+      border-color: var(--primary-color) !important;
+      box-shadow: 0 0 5px rgba(62, 193, 211, 0.5);
+    }
+    
+    .command-error {
+      border-color: var(--accent-color) !important; 
+      box-shadow: 0 0 5px rgba(255, 22, 93, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="{{ url_for('dashboard') }}">
+        <span class="logo"><i class="fas fa-wifi me-2"></i>NullHandshake</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('dashboard') }}">
+              <i class="fas fa-home me-1"></i> Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('scan_view') }}">
+              <i class="fas fa-broadcast-tower me-1"></i> WiFi Scan
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('help_page') }}">
+              <i class="fas fa-question-circle me-1"></i> Help
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- Plugin Header -->
+  <div class="plugin-header {{ plugin.id }}-theme fade-in">
+    <div class="plugin-header-bg"></div>
+    <div class="container">
+      <div class="plugin-header-content text-center">
+        <div class="d-flex justify-content-center mb-3 zoom-in">
+          <div class="plugin-icon pulse-animation">
+            <i class="{{ plugin.icon }}"></i>
+          </div>
+        </div>
+        <h1 class="mb-2 slide-up">{{ plugin.name }}</h1>
+        <p class="lead slide-up delay-1">{{ plugin.description }}</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="container">
+      <!-- Plugin Controls Section -->
+      <div class="row mb-4">
+        <div class="col-md-4 mb-4">
+          <div class="card control-card h-100 slide-right delay-1">
+            <div class="card-header">
+              <h5 class="mb-0"><i class="fas fa-cogs me-2"></i> Module Controls</h5>
+            </div>
+            <div class="card-body">
+              <div class="mb-4 fade-in delay-2">
+                <h6 class="text-secondary mb-3">Common Commands</h6>
+                <div class="d-grid gap-2" id="common-commands">
+                  {% if plugin.id == 'wifirecon' %}
+                    <button class="btn btn-outline-info command-btn fade-in delay-2" data-command="list_interfaces">List Interfaces</button>
+                    <button class="btn btn-outline-info command-btn fade-in delay-3" data-command="set_interface wlan0">Set Interface</button>
+                    <button class="btn btn-outline-info command-btn fade-in delay-4" data-command="scan">Start Scan</button>
+                    <button class="btn btn-outline-info command-btn fade-in delay-5" data-command="show_networks">Show Networks</button>
+                  {% elif plugin.id == 'credentialharvester' %}
+                    <button class="btn btn-outline-info command-btn fade-in delay-2" data-command="extract_credentials">Extract Credentials</button>
+                    <button class="btn btn-outline-info command-btn fade-in delay-3" data-command="show_credentials">Show Credentials</button>
+                    <button class="btn btn-outline-info command-btn fade-in delay-4" data-command="save_credentials">Save Credentials</button>
+                  {% elif plugin.id == 'eviltwin' %}
+                    <button class="btn btn-outline-info command-btn fade-in delay-2" data-command="list_interfaces">List Interfaces</button>
+                    <button class="btn btn-outline-info command-btn fade-in delay-3" data-command="set_interface wlan0">Set Interface</button>
+                    <button class="btn btn-outline-info command-btn fade-in delay-4" data-command="set_target">Set Target AP</button>
+                    <button class="btn btn-outline-info command-btn fade-in delay-4" data-command="setup_ap">Setup AP</button>
+                    <button class="btn btn-outline-info command-btn fade-in delay-5" data-command="start_ap">Start AP</button>
+                  {% elif plugin.id == 'wpahandshake' %}
+                    <button class="btn btn-outline-info command-btn fade-in delay-2" data-command="list_interfaces">List Interfaces</button>
+                    <button class="btn btn-outline-info command-btn fade-in delay-3" data-command="set_interface wlan0">Set Interface</button>
+                    <button class="btn btn-outline-info command-btn fade-in delay-4" data-command="scan_for_targets">Scan For Targets</button>
+                    <button class="btn btn-outline-info command-btn fade-in delay-5" data-command="capture_handshake">Capture Handshake</button>
+                  {% endif %}
+                </div>
+              </div>
+              
+              <div class="fade-in delay-5">
+                <h6 class="text-secondary mb-3">Module Information</h6>
+                <p><i class="fas fa-info-circle me-2" style="color: var(--primary-color);"></i> Use the console to run detailed commands or click the quick commands for common operations.</p>
+                <a href="{{ url_for('help_page') }}" class="btn btn-outline-secondary w-100">
+                  <i class="fas fa-book me-2"></i> View Module Documentation
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-8 mb-4">
+          <div class="card h-100 slide-left delay-1">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h5 class="mb-0"><i class="fas fa-terminal me-2"></i> Module Console</h5>
+              <button class="btn btn-sm btn-outline-secondary" id="clear-console">
+                <i class="fas fa-eraser me-1"></i> Clear
+              </button>
+            </div>
+            <div class="card-body">
+              <!-- Terminal Output -->
+              <div class="terminal mb-3 fade-in delay-2" id="terminal-output">
+                <pre>
+<span class="typing-animation">Welcome to {{ plugin.name }} module. Type commands or use the quick command buttons to get started.</span>
+{{ help_output|default('') }}</pre>
+              </div>
+              
+              <!-- Terminal Input -->
+              <div class="terminal-input border-pulse">
+                <span class="terminal-input-prefix">[{{ plugin.id }}] ></span>
+                <input type="text" id="command-input" placeholder="Type a command here..." autofocus>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Module Details Section -->
+      <div class="row">
+        <div class="col-12">
+          <h4 class="section-title">Module Details</h4>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+          <div class="card h-100">
+            <div class="card-header">
+              <h5 class="mb-0"><i class="fas fa-code me-2"></i> Available Commands</h5>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-sm table-hover">
+                  <thead>
+                    <tr>
+                      <th>Command</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% if plugin.id == 'wifirecon' %}
+                      <tr><td><code>list_interfaces</code></td><td>List available wireless interfaces</td></tr>
+                      <tr><td><code>set_interface &lt;iface&gt;</code></td><td>Set the wireless interface to use</td></tr>
+                      <tr><td><code>scan</code></td><td>Start scanning for wireless networks</td></tr>
+                      <tr><td><code>stop_scan</code></td><td>Stop the current scan</td></tr>
+                      <tr><td><code>show_networks</code></td><td>Display discovered wireless networks</td></tr>
+                      <tr><td><code>show_clients</code></td><td>Display discovered wireless clients</td></tr>
+                      <tr><td><code>show_probes</code></td><td>Display captured probe requests</td></tr>
+                      <tr><td><code>set_channel &lt;ch&gt;</code></td><td>Set the wireless interface to a specific channel</td></tr>
+                      <tr><td><code>start_channel_hopping</code></td><td>Start channel hopping to scan all channels</td></tr>
+                      <tr><td><code>save_results &lt;file&gt;</code></td><td>Save scan results to a file</td></tr>
+                    {% elif plugin.id == 'credentialharvester' %}
+                      <tr><td><code>extract_credentials</code></td><td>Extract stored WiFi credentials</td></tr>
+                      <tr><td><code>show_credentials</code></td><td>Display extracted credentials</td></tr>
+                      <tr><td><code>save_credentials &lt;file&gt;</code></td><td>Save credentials to a file</td></tr>
+                      <tr><td><code>set_target &lt;os&gt;</code></td><td>Set target operating system (windows, linux, macos)</td></tr>
+                      <tr><td><code>clear_credentials</code></td><td>Clear currently stored credentials</td></tr>
+                    {% elif plugin.id == 'eviltwin' %}
+                      <tr><td><code>list_interfaces</code></td><td>List available wireless interfaces</td></tr>
+                      <tr><td><code>set_interface &lt;iface&gt;</code></td><td>Set the wireless interface to use</td></tr>
+                      <tr><td><code>scan_for_targets</code></td><td>Scan for potential target networks</td></tr>
+                      <tr><td><code>set_target &lt;bssid&gt;</code></td><td>Set target access point by BSSID</td></tr>
+                      <tr><td><code>set_ssid &lt;ssid&gt;</code></td><td>Set SSID for the rogue access point</td></tr>
+                      <tr><td><code>setup_ap</code></td><td>Configure the rogue access point</td></tr>
+                      <tr><td><code>start_ap</code></td><td>Start the rogue access point</td></tr>
+                      <tr><td><code>stop_ap</code></td><td>Stop the rogue access point</td></tr>
+                      <tr><td><code>show_captured_credentials</code></td><td>Show captured credentials</td></tr>
+                    {% elif plugin.id == 'wpahandshake' %}
+                      <tr><td><code>list_interfaces</code></td><td>List available wireless interfaces</td></tr>
+                      <tr><td><code>set_interface &lt;iface&gt;</code></td><td>Set the wireless interface to use</td></tr>
+                      <tr><td><code>scan_for_targets</code></td><td>Scan for potential target networks</td></tr>
+                      <tr><td><code>set_target &lt;bssid&gt;</code></td><td>Set target access point by BSSID</td></tr>
+                      <tr><td><code>deauth &lt;client&gt;</code></td><td>Send deauthentication packets to a client</td></tr>
+                      <tr><td><code>deauth_all</code></td><td>Send deauthentication packets to all clients</td></tr>
+                      <tr><td><code>capture_handshake</code></td><td>Start capturing WPA handshakes</td></tr>
+                      <tr><td><code>stop_capture</code></td><td>Stop capturing WPA handshakes</td></tr>
+                      <tr><td><code>show_captures</code></td><td>Show captured handshakes</td></tr>
+                      <tr><td><code>export_handshake &lt;file&gt;</code></td><td>Export captured handshake to a file</td></tr>
+                    {% endif %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+          <div class="card h-100">
+            <div class="card-header">
+              <h5 class="mb-0"><i class="fas fa-lightbulb me-2"></i> Tips & Examples</h5>
+            </div>
+            <div class="card-body">
+              {% if plugin.id == 'wifirecon' %}
+                <div class="alert alert-info">
+                  <h6 class="alert-heading"><i class="fas fa-info-circle me-2"></i> Getting Started</h6>
+                  <p>To scan for networks, follow these steps:</p>
+                  <ol>
+                    <li>Run <code>list_interfaces</code> to see available interfaces</li>
+                    <li>Set your wireless adapter with <code>set_interface wlan0</code> (replace wlan0 with your interface)</li>
+                    <li>Start scanning with <code>scan</code></li>
+                    <li>View results with <code>show_networks</code></li>
+                  </ol>
+                </div>
+                <div class="alert alert-warning">
+                  <h6 class="alert-heading"><i class="fas fa-exclamation-triangle me-2"></i> Requirements</h6>
+                  <p>This module requires a wireless adapter that supports monitor mode.</p>
+                </div>
+              {% elif plugin.id == 'credentialharvester' %}
+                <div class="alert alert-info">
+                  <h6 class="alert-heading"><i class="fas fa-info-circle me-2"></i> Getting Started</h6>
+                  <p>To extract WiFi credentials:</p>
+                  <ol>
+                    <li>Run <code>extract_credentials</code> to gather saved credentials</li>
+                    <li>View extracted credentials with <code>show_credentials</code></li>
+                    <li>Save them to a file with <code>save_credentials output.txt</code></li>
+                  </ol>
+                </div>
+                <div class="alert alert-warning">
+                  <h6 class="alert-heading"><i class="fas fa-exclamation-triangle me-2"></i> Platform Support</h6>
+                  <p>This module works on Windows, Linux, and macOS. On Windows, it requires administrator privileges.</p>
+                </div>
+              {% elif plugin.id == 'eviltwin' %}
+                <div class="alert alert-info">
+                  <h6 class="alert-heading"><i class="fas fa-info-circle me-2"></i> Getting Started</h6>
+                  <p>To create a rogue access point:</p>
+                  <ol>
+                    <li>Run <code>list_interfaces</code> to see available interfaces</li>
+                    <li>Set your wireless adapter with <code>set_interface wlan0</code></li>
+                    <li>Scan for targets with <code>scan_for_targets</code></li>
+                    <li>Set a target with <code>set_target 00:11:22:33:44:55</code></li>
+                    <li>Set up the AP with <code>setup_ap</code></li>
+                    <li>Start the AP with <code>start_ap</code></li>
+                  </ol>
+                </div>
+                <div class="alert alert-danger">
+                  <h6 class="alert-heading"><i class="fas fa-exclamation-triangle me-2"></i> Warning</h6>
+                  <p>This module creates a rogue access point. Use only in authorized test environments.</p>
+                </div>
+              {% elif plugin.id == 'wpahandshake' %}
+                <div class="alert alert-info">
+                  <h6 class="alert-heading"><i class="fas fa-info-circle me-2"></i> Getting Started</h6>
+                  <p>To capture WPA handshakes:</p>
+                  <ol>
+                    <li>Run <code>list_interfaces</code> to see available interfaces</li>
+                    <li>Set your wireless adapter with <code>set_interface wlan0</code></li>
+                    <li>Scan for targets with <code>scan_for_targets</code></li>
+                    <li>Set a target with <code>set_target 00:11:22:33:44:55</code></li>
+                    <li>Capture handshakes with <code>capture_handshake</code></li>
+                    <li>Export with <code>export_handshake capture.cap</code></li>
+                  </ol>
+                </div>
+                <div class="alert alert-warning">
+                  <h6 class="alert-heading"><i class="fas fa-exclamation-triangle me-2"></i> Requirements</h6>
+                  <p>This module requires a wireless adapter that supports monitor mode and packet injection.</p>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <span class="logo">NullHandshake</span>
+          <small class="d-block">Wireless Network Post-Exploitation Framework</small>
+        </div>
+        <div>
+          <small>&copy; 2025 - Version 0.1.0</small>
+        </div>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Custom JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const terminalOutput = document.getElementById('terminal-output');
+      const commandInput = document.getElementById('command-input');
+      const clearConsoleBtn = document.getElementById('clear-console');
+      const commandBtns = document.querySelectorAll('.command-btn');
+      
+      // Loading spinner HTML
+      const loadingSpinner = `<div class="spinner-border spinner-border-sm text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>`;
+      
+      // Command execution responses - used for randomizing responses
+      const successMessages = [
+        "Command executed successfully.",
+        "Operation completed.",
+        "Task completed successfully.",
+        "Process finished with exit code 0.",
+        "Command execution successful."
+      ];
+      
+      const progressMessages = [
+        "Processing...",
+        "Analyzing data...",
+        "Executing command...",
+        "Reading interfaces...",
+        "Scanning network...",
+        "Initializing operation..."
+      ];
+      
+      // Scroll terminal to bottom
+      function scrollTerminalToBottom() {
+        terminalOutput.scrollTop = terminalOutput.scrollHeight;
+      }
+      
+      // Add text to terminal with typing animation effect
+      function appendToTerminal(text, isCommand = false, isError = false) {
+        if (isCommand) {
+          // Commands appear immediately
+          terminalOutput.innerHTML += `<span style="color: var(--primary-color);">[{{ plugin.id }}] ></span> ${text}\n`;
+        } else if (isError) {
+          // Errors appear with error styling
+          terminalOutput.innerHTML += `<span style="color: var(--accent-color);">Error: ${text}</span>\n`;
+        } else {
+          // Regular output appears with a brief delay to simulate processing
+          const outputId = 'output-' + Date.now();
+          terminalOutput.innerHTML += `<span id="${outputId}" class="fade-in"></span>\n`;
+          
+          // Use setTimeout to simulate a brief processing delay
+          setTimeout(() => {
+            document.getElementById(outputId).textContent = text;
+          }, 300);
+        }
+        scrollTerminalToBottom();
+      }
+      
+      // Simulate typing effect
+      function simulateTyping(element, text, speed = 50) {
+        let i = 0;
+        element.innerHTML = '';
+        
+        const typing = setInterval(() => {
+          if (i < text.length) {
+            element.innerHTML += text.charAt(i);
+            i++;
+          } else {
+            clearInterval(typing);
+          }
+          scrollTerminalToBottom();
+        }, speed);
+      }
+      
+      // Clear terminal
+      function clearTerminal() {
+        terminalOutput.innerHTML = '';
+        // Add a welcome message with typing animation
+        const welcomeMessage = `Welcome to {{ plugin.name }} module. Type commands or use the quick command buttons to get started.`;
+        
+        terminalOutput.innerHTML = `<pre><span class="typing-animation">${welcomeMessage}</span></pre>`;
+      }
+      
+      // Execute command with animation effects
+      function executeCommand(command, sourceButton = null) {
+        // Show command in terminal
+        appendToTerminal(command, true);
+        
+        // Add a random progress message
+        const progressMsg = progressMessages[Math.floor(Math.random() * progressMessages.length)];
+        const progressElement = document.createElement('div');
+        progressElement.classList.add('text-secondary', 'mb-2');
+        progressElement.innerHTML = `<small><i class="fas fa-spinner fa-spin me-2"></i> ${progressMsg}</small>`;
+        terminalOutput.appendChild(progressElement);
+        scrollTerminalToBottom();
+        
+        // If there's a button that triggered this command, add visual feedback
+        if (sourceButton) {
+          sourceButton.classList.add('command-executing');
+          sourceButton.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Executing...`;
+        }
+        
+        // Disable input while command is executing
+        commandInput.disabled = true;
+        commandInput.placeholder = "Executing command...";
+        
+        // Add a small random delay to simulate processing time
+        const processingTime = 500 + Math.random() * 1500;
+        
+        setTimeout(() => {
+          // Send command to server
+          fetch('/command', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `command=${encodeURIComponent('load ' + '{{ plugin.id }}' + ' && ' + command)}`
+          })
+          .then(response => response.json())
+          .then(data => {
+            // Remove the progress message
+            terminalOutput.removeChild(progressElement);
+            
+            if (data.output) {
+              // Split output by lines for better presentation
+              const outputLines = data.output.split('\n');
+              outputLines.forEach(line => {
+                if (line.trim() !== '') {
+                  appendToTerminal(line);
+                }
+              });
+              
+              // Add a success message
+              const successMsg = successMessages[Math.floor(Math.random() * successMessages.length)];
+              appendToTerminal(`<span style="color: var(--primary-color);"><i class="fas fa-check-circle me-2"></i> ${successMsg}</span>`);
+              
+              // Visual feedback for success
+              if (sourceButton) {
+                sourceButton.classList.remove('command-executing');
+                sourceButton.classList.add('command-success');
+                sourceButton.innerHTML = sourceButton.getAttribute('data-command');
+                
+                // Reset the button after a moment
+                setTimeout(() => {
+                  sourceButton.classList.remove('command-success');
+                }, 2000);
+              }
+            } else if (data.error) {
+              appendToTerminal(data.error, false, true);
+              
+              // Visual feedback for error
+              if (sourceButton) {
+                sourceButton.classList.remove('command-executing');
+                sourceButton.classList.add('command-error');
+                sourceButton.innerHTML = sourceButton.getAttribute('data-command');
+                
+                // Reset the button after a moment
+                setTimeout(() => {
+                  sourceButton.classList.remove('command-error');
+                }, 2000);
+              }
+            }
+            
+            // Re-enable input
+            commandInput.disabled = false;
+            commandInput.placeholder = "Type a command here...";
+            commandInput.focus();
+          })
+          .catch(error => {
+            // Remove the progress message
+            terminalOutput.removeChild(progressElement);
+            
+            appendToTerminal(error.message, false, true);
+            
+            // Visual feedback for error
+            if (sourceButton) {
+              sourceButton.classList.remove('command-executing');
+              sourceButton.classList.add('command-error');
+              sourceButton.innerHTML = sourceButton.getAttribute('data-command');
+              
+              // Reset the button after a moment
+              setTimeout(() => {
+                sourceButton.classList.remove('command-error');
+              }, 2000);
+            }
+            
+            // Re-enable input
+            commandInput.disabled = false;
+            commandInput.placeholder = "Type a command here...";
+            commandInput.focus();
+          });
+        }, processingTime);
+      }
+      
+      // Event listener for command input
+      commandInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          const command = this.value.trim();
+          if (command) {
+            executeCommand(command);
+            this.value = '';
+          }
+        }
+      });
+      
+      // Event listener for clear console button
+      clearConsoleBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        clearTerminal();
+      });
+      
+      // Event listeners for command buttons
+      commandBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          // Prevent multiple clicks during execution
+          if (this.classList.contains('command-executing')) {
+            return;
+          }
+          
+          const command = this.getAttribute('data-command');
+          executeCommand(command, this);
+        });
+      });
+      
+      // Scroll to bottom on load
+      scrollTerminalToBottom();
+      
+      // Apply a staggered animation to module details cards
+      document.querySelectorAll('.module-details .card').forEach((card, index) => {
+        card.classList.add('fade-in', `delay-${index + 1}`);
+      });
+    });
+  </script>
+</body>
+</html>

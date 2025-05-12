@@ -1,0 +1,91 @@
+/* NullHandshake - Phishing Portal Custom CSS */
+
+/* Body and general styles */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bs-dark);
+}
+
+/* Main content should fill available space */
+main {
+    flex: 1;
+}
+
+/* Footer styles */
+footer {
+    margin-top: auto;
+}
+
+/* Card shadows and borders */
+.card {
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.25);
+}
+
+.card-header {
+    border-bottom: none;
+}
+
+/* WiFi icon spinning animation */
+@keyframes wifi-pulse {
+    0% { opacity: 0.5; }
+    50% { opacity: 1; }
+    100% { opacity: 0.5; }
+}
+
+.fa-wifi {
+    animation: wifi-pulse 2s infinite ease-in-out;
+}
+
+/* Form focus styles */
+.form-control:focus, .btn:focus {
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    border-color: #0d6efd;
+}
+
+/* Custom button hover effect */
+.btn-primary {
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(13, 110, 253, 0.15);
+}
+
+/* Progress bar animation */
+.progress {
+    height: 0.5rem;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Custom spinner size */
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* Make links stand out a bit more */
+a {
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    text-decoration: underline !important;
+    opacity: 0.9;
+}
+
+/* Media queries for responsive layouts */
+@media (max-width: 576px) {
+    .container {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}

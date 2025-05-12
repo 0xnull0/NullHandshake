@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WiFi Scan - NullHandshake</title>
+  
+  <!-- Bootstrap CSS (Dark Theme) -->
+  <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+  
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --primary-color: #3ec1d3;
+      --secondary-color: #ff9a3c;
+      --accent-color: #ff165d;
+      --dark-bg: #0e153a;
+      --card-bg: rgba(30, 39, 97, 0.6);
+      --text-primary: #ffffff;
+      --text-secondary: #b3b3b3;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--dark-bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      background-image: 
+        radial-gradient(circle at 20% 35%, rgba(62, 193, 211, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 75% 60%, rgba(255, 154, 60, 0.15) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+    
+    .navbar {
+      background: linear-gradient(90deg, rgba(14, 21, 58, 0.95) 0%, rgba(30, 39, 97, 0.95) 100%);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+    }
+    
+    .logo {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+      letter-spacing: -1px;
+      font-size: 1.5rem;
+    }
+
+    .logo i {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .navbar .nav-link {
+      color: var(--text-primary);
+      margin: 0 10px;
+      position: relative;
+      transition: color 0.3s;
+    }
+    
+    .navbar .nav-link:before {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      transition: width 0.3s;
+    }
+    
+    .navbar .nav-link:hover {
+      color: var(--primary-color);
+    }
+    
+    .navbar .nav-link:hover:before {
+      width: 100%;
+    }
+    
+    .navbar .nav-link.active:before {
+      width: 100%;
+    }
+    
+    .main-content {
+      padding: 30px 0;
+    }
+    
+    .section-title {
+      font-weight: 700;
+      margin-bottom: 25px;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .section-title:after {
+      content: '';
+      position: absolute;
+      width: 50%;
+      height: 3px;
+      bottom: -8px;
+      left: 0;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      border-radius: 2px;
+    }
+    
+    .card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 15px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .card:hover {
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .card-header {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .terminal {
+      background-color: #1a1a1a;
+      border-radius: 15px;
+      color: #f8f8f8;
+      font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+      padding: 20px;
+      height: 400px;
+      overflow-y: auto;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .terminal pre {
+      margin: 0;
+      white-space: pre-wrap;
+      color: inherit;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      border: none;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+    }
+    
+    .network-card {
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    
+    .network-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .network-card .signal-strength {
+      width: 70px;
+      height: 70px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      margin-right: 15px;
+    }
+    
+    .network-card .network-name {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    
+    .network-card .network-detail {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+    
+    .network-card .security-icon {
+      color: var(--accent-color);
+    }
+    
+    .security-open {
+      color: #26D0CE;
+    }
+    
+    .security-wep {
+      color: #ff9a3c;
+    }
+    
+    .security-wpa {
+      color: #ff165d;
+    }
+    
+    .signal-weak {
+      color: #ff165d;
+    }
+    
+    .signal-medium {
+      color: #ff9a3c;
+    }
+    
+    .signal-strong {
+      color: #26D0CE;
+    }
+    
+    .action-btn {
+      background: var(--card-bg);
+      color: var(--text-primary);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50px;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      transition: all 0.3s;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .action-btn:hover {
+      background: linear-gradient(90deg, rgba(62, 193, 211, 0.2), rgba(255, 154, 60, 0.2));
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .action-btn i {
+      margin-right: 8px;
+      color: var(--primary-color);
+    }
+    
+    footer {
+      background: linear-gradient(90deg, rgba(14, 21, 58, 0.95) 0%, rgba(30, 39, 97, 0.95) 100%);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-secondary);
+      padding: 20px 0;
+      margin-top: 50px;
+    }
+    
+    .pulse-animation {
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(62, 193, 211, 0.7);
+      }
+      70% {
+        box-shadow: 0 0 0 10px rgba(62, 193, 211, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(62, 193, 211, 0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="{{ url_for('dashboard') }}">
+        <span class="logo"><i class="fas fa-wifi me-2"></i>NullHandshake</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('dashboard') }}">
+              <i class="fas fa-home me-1"></i> Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{{ url_for('scan_view') }}">
+              <i class="fas fa-broadcast-tower me-1"></i> WiFi Scan
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('help_page') }}">
+              <i class="fas fa-question-circle me-1"></i> Help
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="container">
+      <!-- Header Section -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <h1 class="mb-0">
+            <i class="fas fa-broadcast-tower me-2" style="color: var(--primary-color);"></i>
+            WiFi Scanner
+          </h1>
+          <p class="text-secondary">Scan and analyze wireless networks in your vicinity</p>
+        </div>
+      </div>
+      
+      <!-- Scan Controls Section -->
+      <div class="row mb-4">
+        <div class="col-md-6 mb-4">
+          <div class="card h-100">
+            <div class="card-header">
+              <h5 class="mb-0"><i class="fas fa-cogs me-2"></i> Scan Controls</h5>
+            </div>
+            <div class="card-body">
+              <div class="mb-4">
+                <label class="form-label text-secondary">Interface Selection</label>
+                <select class="form-select mb-3" id="interface-select">
+                  <option value="">Select a wireless interface</option>
+                  <option value="wlan0">wlan0</option>
+                  <option value="wlan1">wlan1</option>
+                </select>
+              </div>
+              
+              <div class="mb-4">
+                <label class="form-label text-secondary">Scanning Options</label>
+                <div class="form-check mb-2">
+                  <input class="form-check-input" type="checkbox" id="channel-hopping-check" checked>
+                  <label class="form-check-label" for="channel-hopping-check">
+                    Enable channel hopping
+                  </label>
+                </div>
+                <div class="form-check mb-2">
+                  <input class="form-check-input" type="checkbox" id="capture-handshakes-check">
+                  <label class="form-check-label" for="capture-handshakes-check">
+                    Capture WPA handshakes
+                  </label>
+                </div>
+                <div class="form-check mb-3">
+                  <input class="form-check-input" type="checkbox" id="monitor-clients-check" checked>
+                  <label class="form-check-label" for="monitor-clients-check">
+                    Monitor client devices
+                  </label>
+                </div>
+              </div>
+              
+              <div class="d-grid gap-3">
+                <button type="button" class="btn btn-primary" id="start-scan-btn">
+                  <i class="fas fa-play me-2"></i> Start Scan
+                </button>
+                <button type="button" class="btn btn-outline-danger d-none" id="stop-scan-btn">
+                  <i class="fas fa-stop me-2"></i> Stop Scan
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+          <div class="card h-100">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i> Scan Statistics</h5>
+              <div class="badge bg-info pulse-animation d-none" id="scanning-badge">
+                <i class="fas fa-spinner fa-spin me-1"></i> Scanning
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <div class="p-3 border rounded bg-dark">
+                    <div class="d-flex align-items-center">
+                      <div class="me-3">
+                        <i class="fas fa-wifi fa-2x" style="color: var(--primary-color);"></i>
+                      </div>
+                      <div>
+                        <div class="fs-2 fw-bold" id="networks-count">0</div>
+                        <div class="text-secondary">Networks Found</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="p-3 border rounded bg-dark">
+                    <div class="d-flex align-items-center">
+                      <div class="me-3">
+                        <i class="fas fa-users fa-2x" style="color: var(--secondary-color);"></i>
+                      </div>
+                      <div>
+                        <div class="fs-2 fw-bold" id="clients-count">0</div>
+                        <div class="text-secondary">Clients Detected</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="p-3 border rounded bg-dark">
+                    <div class="d-flex align-items-center">
+                      <div class="me-3">
+                        <i class="fas fa-shield-alt fa-2x" style="color: var(--accent-color);"></i>
+                      </div>
+                      <div>
+                        <div class="fs-2 fw-bold" id="encrypted-count">0</div>
+                        <div class="text-secondary">Encrypted Networks</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="p-3 border rounded bg-dark">
+                    <div class="d-flex align-items-center">
+                      <div class="me-3">
+                        <i class="fas fa-unlock fa-2x" style="color: #26D0CE;"></i>
+                      </div>
+                      <div>
+                        <div class="fs-2 fw-bold" id="open-count">0</div>
+                        <div class="text-secondary">Open Networks</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Networks Section -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="section-title mb-0">Discovered Networks</h4>
+            <div class="d-flex">
+              <div class="input-group me-2" style="max-width: 300px;">
+                <input type="text" class="form-control" placeholder="Search networks..." id="network-search">
+                <button class="btn btn-outline-secondary" type="button">
+                  <i class="fas fa-search"></i>
+                </button>
+              </div>
+              <select class="form-select" style="max-width: 150px;" id="sort-by">
+                <option value="strength">Signal Strength</option>
+                <option value="name">Name (A-Z)</option>
+                <option value="channel">Channel</option>
+                <option value="security">Security</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="terminal mb-4" id="scan-output">
+            <pre>{{ scan_output|default('No scan results available. Start a scan to view the discovered networks.') }}</pre>
+          </div>
+          
+          <!-- Mock Networks for UI Demo -->
+          <div class="row g-4" id="networks-container">
+            <div class="col-md-6">
+              <div class="card network-card">
+                <div class="card-body">
+                  <div class="d-flex align-items-center">
+                    <div class="signal-strength signal-strong">
+                      <i class="fas fa-signal"></i> 90%
+                    </div>
+                    <div class="flex-grow-1">
+                      <h5 class="network-name">WiFi-Network-1</h5>
+                      <div class="d-flex flex-wrap">
+                        <div class="network-detail me-3">
+                          <i class="fas fa-broadcast-tower me-1"></i> Channel: 6
+                        </div>
+                        <div class="network-detail me-3">
+                          <i class="fas fa-shield-alt me-1 security-wpa"></i> WPA2-PSK
+                        </div>
+                        <div class="network-detail">
+                          <i class="fas fa-fingerprint me-1"></i> 00:11:22:33:44:55
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                          Actions
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="#"><i class="fas fa-lock me-2"></i> Capture Handshake</a></li>
+                          <li><a class="dropdown-item" href="#"><i class="fas fa-clone me-2"></i> Create Evil Twin</a></li>
+                          <li><a class="dropdown-item" href="#"><i class="fas fa-users me-2"></i> View Clients</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-6">
+              <div class="card network-card">
+                <div class="card-body">
+                  <div class="d-flex align-items-center">
+                    <div class="signal-strength signal-medium">
+                      <i class="fas fa-signal"></i> 65%
+                    </div>
+                    <div class="flex-grow-1">
+                      <h5 class="network-name">Home-Network</h5>
+                      <div class="d-flex flex-wrap">
+                        <div class="network-detail me-3">
+                          <i class="fas fa-broadcast-tower me-1"></i> Channel: 11
+                        </div>
+                        <div class="network-detail me-3">
+                          <i class="fas fa-shield-alt me-1 security-wpa"></i> WPA2-PSK
+                        </div>
+                        <div class="network-detail">
+                          <i class="fas fa-fingerprint me-1"></i> AA:BB:CC:DD:EE:FF
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                          Actions
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="#"><i class="fas fa-lock me-2"></i> Capture Handshake</a></li>
+                          <li><a class="dropdown-item" href="#"><i class="fas fa-clone me-2"></i> Create Evil Twin</a></li>
+                          <li><a class="dropdown-item" href="#"><i class="fas fa-users me-2"></i> View Clients</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-6">
+              <div class="card network-card">
+                <div class="card-body">
+                  <div class="d-flex align-items-center">
+                    <div class="signal-strength signal-weak">
+                      <i class="fas fa-signal"></i> 30%
+                    </div>
+                    <div class="flex-grow-1">
+                      <h5 class="network-name">Free-WiFi</h5>
+                      <div class="d-flex flex-wrap">
+                        <div class="network-detail me-3">
+                          <i class="fas fa-broadcast-tower me-1"></i> Channel: 1
+                        </div>
+                        <div class="network-detail me-3">
+                          <i class="fas fa-unlock me-1 security-open"></i> Open
+                        </div>
+                        <div class="network-detail">
+                          <i class="fas fa-fingerprint me-1"></i> 11:22:33:44:55:66
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                          Actions
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="#"><i class="fas fa-clone me-2"></i> Create Evil Twin</a></li>
+                          <li><a class="dropdown-item" href="#"><i class="fas fa-users me-2"></i> View Clients</a></li>
+                          <li><a class="dropdown-item" href="#"><i class="fas fa-info-circle me-2"></i> Network Details</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-6">
+              <div class="card network-card">
+                <div class="card-body">
+                  <div class="d-flex align-items-center">
+                    <div class="signal-strength signal-medium">
+                      <i class="fas fa-signal"></i> 50%
+                    </div>
+                    <div class="flex-grow-1">
+                      <h5 class="network-name">Corp-Guest</h5>
+                      <div class="d-flex flex-wrap">
+                        <div class="network-detail me-3">
+                          <i class="fas fa-broadcast-tower me-1"></i> Channel: 36
+                        </div>
+                        <div class="network-detail me-3">
+                          <i class="fas fa-shield-alt me-1 security-wpa"></i> WPA-Enterprise
+                        </div>
+                        <div class="network-detail">
+                          <i class="fas fa-fingerprint me-1"></i> BB:CC:DD:EE:FF:00
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                          Actions
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="#"><i class="fas fa-lock me-2"></i> Capture Handshake</a></li>
+                          <li><a class="dropdown-item" href="#"><i class="fas fa-clone me-2"></i> Create Evil Twin</a></li>
+                          <li><a class="dropdown-item" href="#"><i class="fas fa-users me-2"></i> View Clients</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Action Buttons -->
+      <div class="row mb-5">
+        <div class="col-12">
+          <h4 class="section-title">Quick Actions</h4>
+          <div class="d-flex flex-wrap gap-3">
+            <a href="{{ url_for('plugin_view', plugin_id='wifirecon') }}" class="action-btn">
+              <i class="fas fa-wifi"></i> WiFi Recon Module
+            </a>
+            <a href="{{ url_for('plugin_view', plugin_id='wpahandshake') }}" class="action-btn">
+              <i class="fas fa-lock"></i> WPA Handshake Capture
+            </a>
+            <a href="#" class="action-btn" id="save-results-btn">
+              <i class="fas fa-save"></i> Save Scan Results
+            </a>
+            <a href="#" class="action-btn" id="export-clients-btn">
+              <i class="fas fa-users"></i> Export Client List
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <span class="logo">NullHandshake</span>
+          <small class="d-block">Wireless Network Post-Exploitation Framework</small>
+        </div>
+        <div>
+          <small>&copy; 2025 - Version 0.1.0</small>
+        </div>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Custom JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const startScanBtn = document.getElementById('start-scan-btn');
+      const stopScanBtn = document.getElementById('stop-scan-btn');
+      const scanningBadge = document.getElementById('scanning-badge');
+      const scanOutput = document.getElementById('scan-output');
+      const interfaceSelect = document.getElementById('interface-select');
+      
+      // Network demo data
+      const networksCount = document.getElementById('networks-count');
+      const clientsCount = document.getElementById('clients-count');
+      const encryptedCount = document.getElementById('encrypted-count');
+      const openCount = document.getElementById('open-count');
+      
+      // Set initial demo values
+      networksCount.textContent = '4';
+      clientsCount.textContent = '12';
+      encryptedCount.textContent = '3';
+      openCount.textContent = '1';
+      
+      // Start scan button click
+      startScanBtn.addEventListener('click', function() {
+        if (interfaceSelect.value === '') {
+          alert('Please select a wireless interface first!');
+          return;
+        }
+        
+        // Toggle UI elements
+        startScanBtn.classList.add('d-none');
+        stopScanBtn.classList.remove('d-none');
+        scanningBadge.classList.remove('d-none');
+        
+        // Execute the scan command
+        fetch('/command', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: `command=${encodeURIComponent('load wifirecon && set_interface ' + interfaceSelect.value + ' && scan')}`
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.output) {
+            scanOutput.innerHTML = '<pre>' + data.output + '</pre>';
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      });
+      
+      // Stop scan button click
+      stopScanBtn.addEventListener('click', function() {
+        // Toggle UI elements
+        startScanBtn.classList.remove('d-none');
+        stopScanBtn.classList.add('d-none');
+        scanningBadge.classList.add('d-none');
+        
+        // Execute the stop scan command
+        fetch('/command', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: `command=${encodeURIComponent('load wifirecon && stop_scan')}`
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.output) {
+            scanOutput.innerHTML += '<pre>' + data.output + '</pre>';
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      });
+      
+      // Save results button click
+      document.getElementById('save-results-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+        alert('Scan results saved to scan_results.txt');
+      });
+      
+      // Export clients button click
+      document.getElementById('export-clients-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+        alert('Client list exported to clients.csv');
+      });
+    });
+  </script>
+</body>
+</html>
